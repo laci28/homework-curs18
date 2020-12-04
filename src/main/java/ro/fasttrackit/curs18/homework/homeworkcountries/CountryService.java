@@ -2,9 +2,7 @@ package ro.fasttrackit.curs18.homework.homeworkcountries;
 
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
@@ -87,15 +85,14 @@ public class CountryService {
     public Map<String, List<Country>> continentToListOfCountries() {
         return countryList.stream()
                 .map(Country::getContinent)
-                .collect(Collectors.toMap(Country::getContinent,
-                        countryList.stream().map(Country::getContinent).collect(Collectors.toList())));
+                .collect(Collectors.toMap(Country::getContinent.toString(), Collectors.toList()));
     }
 
     @GetMapping(params = ("includeNeighbour"))
     @ResponseBody
     public List<Country> includedNeighbour(@RequestParam("includeNeighbour") String x, @RequestParam("excludeNeighbour") String y){
         return countryList.stream()
-                .filter(country -> country.getNeighbour().contains(x.toUpperCase()) && !country.getNeighbour().contains(y.toUpperCase()))
+                .filter(country -> country.getNeighbour().matches(x.toUpperCase()) && !country.getNeighbour().matches(y.toUpperCase()))
                 .collect(Collectors.toList());
     }
 }
