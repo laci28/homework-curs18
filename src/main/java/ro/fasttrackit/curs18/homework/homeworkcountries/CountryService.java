@@ -27,7 +27,6 @@ public class CountryService {
     }
 
     @GetMapping(value = "/{id}/capital")
-    @ResponseBody
     public String getCapitalOfACountry(@PathVariable int id) {
         return countryList.stream()
                 .filter(country -> country.getId() == id)
@@ -36,7 +35,6 @@ public class CountryService {
     }
 
     @GetMapping(value = "/{id}/population")
-    @ResponseBody
     public Long getPopulationOfACountry(@PathVariable int id) {
         return countryList.stream()
                 .filter(country -> country.getId() == id)
@@ -45,7 +43,6 @@ public class CountryService {
     }
 
     @GetMapping(value = "/{continentName}/countries")
-    @ResponseBody
     public List<Country> getCountriesInContinent(@PathVariable String continentName) {
         return countryList.stream()
                 .filter(country -> country.getContinent().toUpperCase()
@@ -54,7 +51,6 @@ public class CountryService {
     }
 
     @GetMapping(value = "/{id}/neighbours")
-    @ResponseBody
     public List<String> getCountryNeighbours(@PathVariable int id) {
         return Arrays.stream(countryList.stream()
                 .filter(country -> country.getId() == id)
@@ -65,7 +61,6 @@ public class CountryService {
     }
 
     @GetMapping(value = "/{continentName}/countries", params = "minPopulation")
-    @ResponseBody
     public List<Country> getCountryByContinentAndMinimumPopulation(@PathVariable String continentName,
                                                                    @RequestParam("minPopulation") int min) {
         return countryList.stream()
@@ -89,10 +84,12 @@ public class CountryService {
     }
 
     @GetMapping(params = ("includeNeighbour"))
-    @ResponseBody
-    public List<Country> includedNeighbour(@RequestParam("includeNeighbour") String x, @RequestParam("excludeNeighbour") String y){
+    public List<Country> includedNeighbour(@RequestParam("includeNeighbour") String neighbour1,
+                                           @RequestParam("excludeNeighbour") String neighbour2){
         return countryList.stream()
-                .filter(country -> country.getNeighbour().matches(x.toUpperCase()) && !country.getNeighbour().matches(y.toUpperCase()))
+                .filter(country -> country.getNeighbour()
+                        .matches(neighbour1.toUpperCase()) && !country.getNeighbour()
+                        .matches(neighbour2.toUpperCase()))
                 .collect(Collectors.toList());
     }
 }

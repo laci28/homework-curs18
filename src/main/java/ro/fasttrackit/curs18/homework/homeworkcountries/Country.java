@@ -1,6 +1,5 @@
 package ro.fasttrackit.curs18.homework.homeworkcountries;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Country {
